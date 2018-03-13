@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdio.h>
 
 char *TrimedString(char *input);
+char **Split(char *input);
 
 char *TrimedString(char *input)
 {
@@ -44,4 +46,59 @@ char *TrimedString(char *input)
 	result[resultIndex] = '\0';
 
 	return result;
+}
+
+char **Split(char *input)
+{
+	char *trimedArray= TrimedString(input);
+	int amountOfWords = 0;
+	int greatestWord = 0, actualWordLength = 0;
+
+	for(int i = 0; i<strlen(trimedArray); i++)
+	{
+		if(trimedArray[i] == ' ')
+		{
+			if(greatestWord < actualWordLength)
+			{
+				greatestWord = actualWordLength;
+				actualWordLength = 0;
+			}
+
+			amountOfWords++;
+		}
+		else if(i == (strlen(trimedArray) - 1) && isalpha(trimedArray[i]) == 0)
+		{
+			amountOfWords++;
+		}
+
+		actualWordLength++;
+	}
+
+	char result[amountOfWords][greatestWord+1];
+	char resultIndex = 0;
+	char tempArray[greatestWord+1];
+
+	for(int i = 0; i<strlen(trimedArray); i++)
+	{
+		if(isalpha(trimedArray[i]) > 0)
+		{
+			tempArray[strlen(tempArray)] = trimedArray[i];
+		}
+
+		if(trimedArray[i] == ' ' || i == strlen(trimedArray) - 1)
+		{
+			tempArray[strlen(tempArray)] = '\0';
+			strcpy(result[resultIndex++], tempArray);
+			memset(tempArray, 0, sizeof tempArray);
+		}
+	}
+
+	char **fixedResult = (char**)malloc(sizeof(char*)*amountOfWords);
+	
+	for(int i = 0; i<amountOfWords+1; i++)
+	{
+		fixedResult[i] = strdup(result[i]);
+	}
+
+	return fixedResult;
 }
