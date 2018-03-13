@@ -1,10 +1,16 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include <stdio.h>
 
+//Base functions
 char *TrimedString(char *input);
 char **Split(char *input);
+
+//Case functions
+char *ULCase(char *input, int lowerOrUpper);
+char *UpperCase(char *input);
+char *LowerCase(char *input);
+char *SwapCase(char *input);
 
 char *TrimedString(char *input)
 {
@@ -51,7 +57,7 @@ char *TrimedString(char *input)
 char **Split(char *input)
 {
 	char *trimedArray= TrimedString(input);
-	int amountOfWords = 0;
+	int amountOfWords = 1;
 	int greatestWord = 0, actualWordLength = 0;
 
 	for(int i = 0; i<strlen(trimedArray); i++)
@@ -100,5 +106,62 @@ char **Split(char *input)
 		fixedResult[i] = strdup(result[i]);
 	}
 
+	strcpy(fixedResult[amountOfWords], "bspxd");
+
 	return fixedResult;
+}
+
+
+char *ULCase(char *input, int lowerOrUpper)
+{
+	char *trimedArray = TrimedString(input);
+	char *result = malloc(sizeof(char) * strlen(trimedArray) + 1);
+
+	for(int i = 0; i<strlen(trimedArray); i++)
+	{
+		if(lowerOrUpper == 0)
+		{
+			result[i] = tolower(trimedArray[i]);
+		}
+		else
+		{
+			result[i] = toupper(trimedArray[i]);
+		}
+
+	}
+
+	result[strlen(result)] = '\0';
+
+	return result;
+
+}
+
+char *UpperCase(char *input)
+{
+	return ULCase(input, 1);
+}
+
+char *LowerCase(char *input)
+{
+	return ULCase(input, 0);
+}
+
+char *SwapCase(char *input)
+{
+	char *trimedArray = TrimedString(input);
+	char *result = malloc(sizeof(char) * (strlen(trimedArray)+1));
+
+	for(int i = 0; i<strlen(trimedArray); i++)
+	{
+		if(trimedArray[i] == toupper(trimedArray[i]))
+		{
+			result[i] = tolower(trimedArray[i]);
+		}
+		else if(trimedArray[i] == tolower(trimedArray[i]))
+		{
+			result[i] = toupper(trimedArray[i]);
+		}
+	}
+
+	return result;
 }
