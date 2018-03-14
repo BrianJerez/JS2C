@@ -14,6 +14,8 @@ char *UpperCase(char *input);
 char *LowerCase(char *input);
 char *SwapCase(char *input);
 char *TitleCase(char *input);
+char *SnakeCase(char *input);
+char *KebabCase(char *input);
 char *CDPitalize(char *input, int flag);
 char *Capitalize(char *input);
 char *Decapitalize(char *input);
@@ -217,6 +219,35 @@ char *TitleCase(char *input)
 	return result;
 }
 
+char *SnakeCase(char *input)
+{
+	input = TrimedString(input);
+	
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isspace(input[i]) > 0)
+		{
+			input[i] = '_';
+		}
+	}
+
+	return input;
+}
+
+char *KebabCase(char *input)
+{
+	input = TrimedString(input);
+	
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isspace(input[i]) > 0)
+		{
+			input[i] = '-';
+		}
+	}
+
+	return input;
+}
 
 char *CDPitalize(char *input, int flag)
 {
