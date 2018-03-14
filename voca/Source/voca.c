@@ -5,12 +5,19 @@
 //Base functions
 char *TrimedString(char *input);
 char **Split(char *input);
+//int CountWords(char *input); on hold
+
 
 //Case functions
 char *ULCase(char *input, int lowerOrUpper);
 char *UpperCase(char *input);
 char *LowerCase(char *input);
 char *SwapCase(char *input);
+char *TitleCase(char *input);
+char *CDPitalize(char *input, int flag);
+char *Capitalize(char *input);
+char *Decapitalize(char *input);
+
 
 char *TrimedString(char *input)
 {
@@ -111,7 +118,6 @@ char **Split(char *input)
 	return fixedResult;
 }
 
-
 char *ULCase(char *input, int lowerOrUpper)
 {
 	char *trimedArray = TrimedString(input);
@@ -164,4 +170,78 @@ char *SwapCase(char *input)
 	}
 
 	return result;
+}
+
+
+char *TitleCase(char *input)
+{
+	char **splitedInput = Split(input);
+	int amountOfWords = 0, totalLength = 0;
+	char *key = "bspxd";
+
+	for(int i = 0; ;i++)
+	{
+		if(strcmp(splitedInput[i], key) == 0)
+		{
+			break;
+		}
+
+		splitedInput[i] = LowerCase(splitedInput[i]);
+		splitedInput[i][0] = toupper(splitedInput[i][0]);
+		amountOfWords++;
+		totalLength += strlen(splitedInput[i]);
+	}
+
+	char* result = malloc(sizeof(char)*(totalLength+amountOfWords+1));
+
+	for(int i = 0; ;i++)
+	{
+		if(strcmp(splitedInput[i], key) == 0)
+		{
+			break;
+		}
+
+		for(int j = 0; j < strlen(splitedInput[i]); j++)
+		{
+			result[strlen(result)] = splitedInput[i][j];
+
+			if((j+1)==strlen(splitedInput[i]))
+			{
+				result[strlen(result)] = ' ';
+			}
+		}
+	}
+
+	result[strlen(result)] = '\0';
+
+	return result;
+}
+
+
+char *CDPitalize(char *input, int flag)
+{
+	input = LowerCase(input);
+	
+	if(flag == 0)
+	{
+		input[0] = toupper(input[0]);
+	}
+	else
+	{
+		input[0] = tolower(input[0]);
+	}
+
+	return input;
+}
+
+char *Capitalize(char *input)
+{
+	input = CDPitalize(input, 0);
+	return input;
+}
+
+char *Decapitalize(char *input)
+{
+	input = CDPitalize(input, 1);
+	return input;
 }
