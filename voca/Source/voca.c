@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include <stdio.h>
 
 //Base functions
 char *TrimedString(char *input);
@@ -31,6 +30,10 @@ char Last(char *input);
 char *FirstOrLastPlus(char *input, int amount, int flag);
 char *FirstPlus(char *input, int amount);
 char *LastPlus(char *input, int amount);
+char *Slice(char *input, int start);
+char *SliceTo(char *input, int start, int end);
+char *SubStr(char *input, int start);
+char *SubStrAmount(char *input, int start, int end);
 
 char *TrimedString(char *input)
 {
@@ -356,4 +359,62 @@ char *FirstPlus(char *input, int amount)
 char *LastPlus(char *input, int amount)
 {
 	return FirstOrLastPlus(input, amount, 1);
+}
+
+char *Slice(char *input, int start)
+{
+	char *result = malloc(sizeof(char)*strlen(input) - (start < 0 ? strlen(input) + start : start) + 1);
+	start = start < 0 ? strlen(input) + start : start;
+
+	while(1)
+	{
+		if(input[start] == '\0')
+		{
+			break;
+		}
+
+		result[strlen(result)] = input[start++];
+	}
+
+	return result;
+}
+
+char *SliceTo(char *input, int start, int end)
+{
+	char *result = malloc(sizeof(char)*end-start+1);
+
+	for(int i = 0; start < end; i++, start++)
+	{
+		result[strlen(result)] = input[start];
+	}
+
+	result[strlen(result)] = '\0';
+	return result;
+}
+
+char *SubStr(char *input, int start)
+{
+	char *result = malloc(sizeof(char) * (strlen(input) - start + 1));
+
+	for(int i = start; i < strlen(input); i++)
+	{
+		result[strlen(result)] = input[i];
+	}
+
+	result[strlen(result)] = '\0';
+	return result;
+}
+
+
+char *SubStrAmount(char *input, int start, int end)
+{
+	char *result = malloc(sizeof(char) * (strlen(input) - start + 1));
+
+	for(int i = start; i < start+end; i++)
+	{
+		result[strlen(result)] = input[i];
+	}
+
+	result[strlen(result)] = '\0';
+	return result;
 }

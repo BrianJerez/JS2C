@@ -17,3 +17,7 @@ char First(char *input);
 char Last(char *input);
 char *FirstPlus(char *input, int amount);
 char *LastPlus(char *input, int amount);
+char *Slice(char *input, int start);
+char *SliceTo(char *input, int start, int end);
+char *SubStr(char *input, int start);
+char *SubStrAmount(char *input, int start, int end);
