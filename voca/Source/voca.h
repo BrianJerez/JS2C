@@ -9,3 +9,11 @@ char *KebabCase(char *input);
 char *Capitalize(char *input);
 char *Decapitalize(char *input);
 
+
+//Chop Functions
+char CharAt(char *input, int index);
+int CodePointAt(char *input, int index);
+char First(char *input);
+char Last(char *input);
+char *FirstPlus(char *input, int amount);
+char *LastPlus(char *input, int amount);

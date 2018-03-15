@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdio.h>
 
 //Base functions
 char *TrimedString(char *input);
@@ -20,6 +21,16 @@ char *CDPitalize(char *input, int flag);
 char *Capitalize(char *input);
 char *Decapitalize(char *input);
 
+
+//Chop Functions
+char CharAt(char *input, int index);
+int CodePointAt(char *input, int index);
+char FirstOrLast(char *input, int flag);
+char First(char *input);
+char Last(char *input);
+char *FirstOrLastPlus(char *input, int amount, int flag);
+char *FirstPlus(char *input, int amount);
+char *LastPlus(char *input, int amount);
 
 char *TrimedString(char *input)
 {
@@ -275,4 +286,74 @@ char *Decapitalize(char *input)
 {
 	input = CDPitalize(input, 1);
 	return input;
+}
+
+char CharAt(char *input, int index)
+{
+	if(index>strlen(input))
+	{
+		return '\0';
+	}
+
+	return input[index];
+}
+
+
+int CodePointAt(char *input, int index)
+{
+	if(index>strlen(input))
+	{
+		return -1;
+	}
+
+	return (int) input[index];
+}
+
+char FirstOrLast(char *input, int flag)
+{
+	if(flag == 0)
+	{
+		return input[0];
+	}
+
+	return strlen(input) > 0 ? input[strlen(input-1)] : '\0';
+}
+
+char First(char *input)
+{
+	return FirstOrLast(input, 0);
+}
+char Last(char *input)
+{
+	return FirstOrLast(input, 1);
+}
+
+char *FirstOrLastPlus(char *input, int amount, int flag)
+{
+		char *result = malloc(sizeof(char)*(amount+1));
+		int i = flag == 0 ? 0 : strlen(input) - amount;
+
+		while(1)
+		{
+			result[strlen(result)] =  input[flag == 0 ? i++ : i++];
+
+			if(--amount == 0)
+			{
+				break;
+			}
+		}
+
+		result[strlen(result)] = '\0';
+
+		return result;
+}
+
+char *FirstPlus(char *input, int amount)
+{
+	return FirstOrLastPlus(input, amount, 0);
+}
+
+char *LastPlus(char *input, int amount)
+{
+	return FirstOrLastPlus(input, amount, 1);
 }
