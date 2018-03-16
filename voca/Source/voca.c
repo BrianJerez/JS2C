@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdio.h>
 
 //Base functions
 char *TrimedString(char *input);
-char **Split(char *input);
-//int CountWords(char *input); on hold
 
 
 //Case functions
@@ -34,6 +33,10 @@ char *Slice(char *input, int start);
 char *SliceTo(char *input, int start, int end);
 char *SubStr(char *input, int start);
 char *SubStrAmount(char *input, int start, int end);
+char *SubString(char *input, int start);
+char *SubStringTo(char *input, int start, int end);
+char *Prune(char *input, int length);
+
 
 char *TrimedString(char *input)
 {
@@ -77,62 +80,6 @@ char *TrimedString(char *input)
 	return result;
 }
 
-char **Split(char *input)
-{
-	char *trimedArray= TrimedString(input);
-	int amountOfWords = 1;
-	int greatestWord = 0, actualWordLength = 0;
-
-	for(int i = 0; i<strlen(trimedArray); i++)
-	{
-		if(trimedArray[i] == ' ')
-		{
-			if(greatestWord < actualWordLength)
-			{
-				greatestWord = actualWordLength;
-				actualWordLength = 0;
-			}
-
-			amountOfWords++;
-		}
-		else if(i == (strlen(trimedArray) - 1) && isalpha(trimedArray[i]) == 0)
-		{
-			amountOfWords++;
-		}
-
-		actualWordLength++;
-	}
-
-	char result[amountOfWords][greatestWord+1];
-	char resultIndex = 0;
-	char tempArray[greatestWord+1];
-
-	for(int i = 0; i<strlen(trimedArray); i++)
-	{
-		if(isalpha(trimedArray[i]) > 0)
-		{
-			tempArray[strlen(tempArray)] = trimedArray[i];
-		}
-
-		if(trimedArray[i] == ' ' || i == strlen(trimedArray) - 1)
-		{
-			tempArray[strlen(tempArray)] = '\0';
-			strcpy(result[resultIndex++], tempArray);
-			memset(tempArray, 0, sizeof tempArray);
-		}
-	}
-
-	char **fixedResult = (char**)malloc(sizeof(char*)*amountOfWords);
-	
-	for(int i = 0; i<amountOfWords+1; i++)
-	{
-		fixedResult[i] = strdup(result[i]);
-	}
-
-	strcpy(fixedResult[amountOfWords], "bspxd");
-
-	return fixedResult;
-}
 
 char *ULCase(char *input, int lowerOrUpper)
 {
@@ -191,40 +138,17 @@ char *SwapCase(char *input)
 
 char *TitleCase(char *input)
 {
-	char **splitedInput = Split(input);
-	int amountOfWords = 0, totalLength = 0;
-	char *key = "bspxd";
-
-	for(int i = 0; ;i++)
+	char *result = malloc(sizeof(char)*(strlen(input)+1));
+	
+	for(int i = 0; i<strlen(input); i++)
 	{
-		if(strcmp(splitedInput[i], key) == 0)
+		if(i==0 || (i>0 && isalpha(input[i]) && isspace(input[i-1])))
 		{
-			break;
+			result[i] = toupper(input[i]);
 		}
-
-		splitedInput[i] = LowerCase(splitedInput[i]);
-		splitedInput[i][0] = toupper(splitedInput[i][0]);
-		amountOfWords++;
-		totalLength += strlen(splitedInput[i]);
-	}
-
-	char* result = malloc(sizeof(char)*(totalLength+amountOfWords+1));
-
-	for(int i = 0; ;i++)
-	{
-		if(strcmp(splitedInput[i], key) == 0)
+		else
 		{
-			break;
-		}
-
-		for(int j = 0; j < strlen(splitedInput[i]); j++)
-		{
-			result[strlen(result)] = splitedInput[i][j];
-
-			if((j+1)==strlen(splitedInput[i]))
-			{
-				result[strlen(result)] = ' ';
-			}
+			result[i] = tolower(input[i]);
 		}
 	}
 
@@ -417,4 +341,33 @@ char *SubStrAmount(char *input, int start, int end)
 
 	result[strlen(result)] = '\0';
 	return result;
+}
+
+char *SubString(char *input, int start)
+{
+	char *result = malloc(sizeof(char) * (strlen(input) - start + 1));
+
+	for(int i = start; i < strlen(input); i++)
+	{
+		result[strlen(result)] = input[i];
+	}
+
+	return result;
+}
+
+char *SubStringTo(char *input, int start, int end)
+{
+	char *result = malloc(sizeof(char) * (strlen(input) - start - end + 1));
+
+	for(int i = start + 1; i <= end; i++)
+	{
+		result[strlen(result)] = input[i];
+	}
+
+	return result;
+}
+
+char *Prune(char *input, int length)
+{
+	
 }

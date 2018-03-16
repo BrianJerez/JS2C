@@ -21,3 +21,6 @@ char *Slice(char *input, int start);
 char *SliceTo(char *input, int start, int end);
 char *SubStr(char *input, int start);
 char *SubStrAmount(char *input, int start, int end);
+char *SubString(char *input, int start);
+char *SubStringTo(char *input, int start, int end);
+char *Prune(char *input, int length);
