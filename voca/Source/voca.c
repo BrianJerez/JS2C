@@ -369,5 +369,53 @@ char *SubStringTo(char *input, int start, int end)
 
 char *Prune(char *input, int length)
 {
+	char *trimedInput = TrimedString(input);
+	int amountOfWords = 0, wordsThatFit = 0, totalLength = 0;
+
+	for(int i = 0; i<strlen(trimedInput); i++)
+	{
+		if(isspace(trimedInput[i]) || i == strlen(trimedInput)-1)
+		{
+			amountOfWords++;
+		}
+	}
+
+	int *stringLengths = malloc(sizeof(int) * amountOfWords);
+	int lengthIndex;
 	
+	for(int i = 0; i<amountOfWords; i++)
+	{
+		stringLengths[i] = 0;
+	}
+
+	for(int i = 0; i<strlen(trimedInput); i++)
+	{
+		if(isspace(trimedInput[i]) > 0)
+		{
+			lengthIndex++;
+			continue;
+		}
+
+		stringLengths[lengthIndex] += 1;
+	}
+	
+	for(int i = 1; i<amountOfWords+1; i++)
+	{
+		totalLength += stringLengths[i];
+		wordsThatFit++;
+
+		if(i+1<=amountOfWords && totalLength + stringLengths[i+1] + 1 > length )
+		{
+			break;
+		}
+	}
+
+	char *result = malloc(sizeof(char)*length);
+
+	while(1)
+	{
+
+	}
+	
+	return trimedInput;	
 }
