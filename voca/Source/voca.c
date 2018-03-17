@@ -37,6 +37,8 @@ char *SubString(char *input, int start);
 char *SubStringTo(char *input, int start, int end);
 char *Prune(char *input, int length);
 
+//Count Functions
+int Count(char *input);
 
 char *TrimedString(char *input)
 {
@@ -402,34 +404,37 @@ char *Prune(char *input, int length)
 	for(int i = 0; i<amountOfWords; i++)
 	{
 
-		totalLength = totalLength + i + stringLengths[i];
+		totalLength = totalLength + i + stringLengths[i];	
 		wordsThatFit++;
+
 		if(totalLength + stringLengths[i+1] >= length )
 		{
 			break;
 		}
-	}
 
-	printf("%d\n", wordsThatFit);
+	}
 
 	char *result = malloc(sizeof(char)*(length+1));
 
-	for(int i = 0; i<strlen(trimedInput); i++)
+	if(length > stringLengths[0])
 	{
-		if(isspace(trimedInput[i]))
+		for(int i = 0; i<strlen(trimedInput); i++)
 		{
-			wordsThatFit--;
-		}
+			if(isspace(trimedInput[i]))
+			{
+				wordsThatFit--;
+			}
 
-		if(wordsThatFit == 0 || i>totalLength)
-		{
-			break;
-		}
+			if(wordsThatFit == 0 || i>totalLength)
+			{
+				break;
+			}
 
-		result[strlen(result)] = trimedInput[i];
+			result[strlen(result)] = trimedInput[i];
+		}
 	}
 
-	while(strlen(result)<length)
+	while(strlen(result)<length && length>2)
 	{
 		result[strlen(result)] = '.';
 	}
@@ -437,4 +442,9 @@ char *Prune(char *input, int length)
 	result[strlen(result)] = '\0';
 
 	return result;	
+}
+
+int Count(char *input)
+{
+	return strlen(input);
 }

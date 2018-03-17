@@ -24,3 +24,6 @@ char *SubStrAmount(char *input, int start, int end);
 char *SubString(char *input, int start);
 char *SubStringTo(char *input, int start, int end);
 char *Prune(char *input, int length);
+
+//Count Functions
+int Count(char *input);
