@@ -381,7 +381,7 @@ char *Prune(char *input, int length)
 	}
 
 	int *stringLengths = malloc(sizeof(int) * amountOfWords);
-	int lengthIndex;
+	int lengthIndex = 0, spaceCounter = 0;
 	
 	for(int i = 0; i<amountOfWords; i++)
 	{
@@ -399,23 +399,42 @@ char *Prune(char *input, int length)
 		stringLengths[lengthIndex] += 1;
 	}
 	
-	for(int i = 1; i<amountOfWords+1; i++)
+	for(int i = 0; i<amountOfWords; i++)
 	{
-		totalLength += stringLengths[i];
-		wordsThatFit++;
 
-		if(i+1<=amountOfWords && totalLength + stringLengths[i+1] + 1 > length )
+		totalLength = totalLength + i + stringLengths[i];
+		wordsThatFit++;
+		if(totalLength + stringLengths[i+1] >= length )
 		{
 			break;
 		}
 	}
 
-	char *result = malloc(sizeof(char)*length);
+	printf("%d\n", wordsThatFit);
 
-	while(1)
+	char *result = malloc(sizeof(char)*(length+1));
+
+	for(int i = 0; i<strlen(trimedInput); i++)
 	{
+		if(isspace(trimedInput[i]))
+		{
+			wordsThatFit--;
+		}
 
+		if(wordsThatFit == 0 || i>totalLength)
+		{
+			break;
+		}
+
+		result[strlen(result)] = trimedInput[i];
 	}
-	
-	return trimedInput;	
+
+	while(strlen(result)<length)
+	{
+		result[strlen(result)] = '.';
+	}
+
+	result[strlen(result)] = '\0';
+
+	return result;	
 }
