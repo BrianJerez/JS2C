@@ -27,3 +27,15 @@ char *Prune(char *input, int length);
 
 //Count Functions
 int Count(char *input);
+int CountSubstring(char *input, char *subInput);
+int CountWords(char *input);
+
+//Index Functions
+int IndexOf(char *input, char *search);
+int IndexOfFrom(char *input, char *search, int from);
+int IndexOfSingleChar(char *input, char search);
+int IndexOfSingleCharFrom(char *input, char search, int from);
+int LastIndexOf(char *input, char *search);
+int LastIndexOfFrom(char *input, char search, int from);
+int LastIndexOfSingleChar(char *input, char search);
+int LastIndexOfSingleCharFrom(char *input, char search, int from);

@@ -5,7 +5,7 @@
 
 //Base functions
 char *TrimedString(char *input);
-
+char *ReplaceSpecialChars(char *input);
 
 //Case functions
 char *ULCase(char *input, int lowerOrUpper);
@@ -39,6 +39,22 @@ char *Prune(char *input, int length);
 
 //Count Functions
 int Count(char *input);
+int CountSubstring(char *input, char *subInput);
+int CountWords(char *input);
+
+//Index Functions
+int NDex(char *input, char *search, int from);
+int IndexOf(char *input, char *search);
+int IndexOfFrom(char *input, char *search, int from);
+int NDexOfSingleChar(char *input, char search, int from);
+int IndexOfSingleChar(char *input, char search);
+int IndexOfSingleCharFrom(char *input, char search, int from);
+int LNDex(char *input, char *search, int from);
+int LastIndexOf(char *input, char *search);
+int LastIndexOfFrom(char *input, char *search, int from);
+int LNDexOfSingleChar(char *input, char search, int from);
+int LastIndexOfSingleChar(char *input, char search);
+int LastIndexOfSingleCharFrom(char *input, char search, int from);
 
 char *TrimedString(char *input)
 {
@@ -82,6 +98,26 @@ char *TrimedString(char *input)
 	return result;
 }
 
+char *ReplaceSpecialChars(char *input)
+{
+	char *result = malloc(sizeof(char)*(strlen(input) + 1));
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isalpha(input[i]) == 0)
+		{
+			result[strlen(result)] = ' ';
+		}
+		else
+		{
+			result[strlen(result)] = input[i];
+		}
+	}
+
+	result[strlen(result)] = '\0';
+
+	return result;
+}
 
 char *ULCase(char *input, int lowerOrUpper)
 {
@@ -447,4 +483,158 @@ char *Prune(char *input, int length)
 int Count(char *input)
 {
 	return strlen(input);
+}
+
+int CountSubstring(char *input, char *subInput)
+{
+	char *trimedInput = TrimedString(input);
+	int repetitions = 0, charCoincidences = 0;
+	
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(input[i] == subInput[charCoincidences])
+		{
+			charCoincidences++;
+		}
+		else
+		{
+			charCoincidences = 0;
+		}
+
+		if(charCoincidences == strlen(subInput))
+		{
+			charCoincidences = 0;
+			repetitions++;
+		}
+
+
+	}
+
+	return repetitions;
+}
+
+int CountWords(char *input)
+{
+	int amountOfWords = 0;
+	char *firstSwap = TrimedString(ReplaceSpecialChars(input));
+	puts(firstSwap);
+
+	for(int i = 0; i<strlen(firstSwap); i++)
+	{
+		if(isspace(firstSwap[i]))
+		{
+			amountOfWords++;
+		}
+	}
+
+	return ++amountOfWords;
+}
+
+
+int NDex(char *input, char *search, int from)
+{
+	int count = 0;
+	
+	for(int i = from; i<strlen(input); i++)
+	{
+			if(input[i] == search[count])
+			{
+				count++;
+			}
+			else
+			{
+				count = 0;
+			}
+
+			if(count == strlen(search))
+			{
+				return i - count + 1;
+			}
+	}
+
+	return -1;
+}
+
+int IndexOf(char *input, char *search)
+{
+	return NDex(input, search, 0);
+}
+
+int IndexOfFrom(char *input, char *search, int from)
+{
+	return NDex(input, search, from);
+}
+
+int NDexOfSingleChar(char *input, char search, int from)
+{
+	for(int i = from; i<strlen(input); i++)
+	{
+		if(input[i] == search)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
+int IndexOfSingleChar(char *input, char search)
+{
+	return NDexOfSingleChar(input, search, 0);
+}
+
+int IndexOfSingleCharFrom(char *input, char search, int from)
+{
+	return NDexOfSingleChar(input, search, from);
+}
+
+int LNDex(char *input, char *search, int from)
+{
+	int lastPosition = -1, searchIndex = 0;
+	for(int i = from; i<strlen(input); i++)
+	{
+		if(input[i] == search[searchIndex] && searchIndex == 0)
+		{
+			lastPosition = i;
+			searchIndex++;
+		}
+		else if(input[i] == search[searchIndex])
+		{
+			searchIndex++;
+		}
+		else if(input[i] != search[searchIndex])
+		{
+			searchIndex = 0;
+		}
+	}
+
+	return lastPosition;
+}
+
+
+int LastIndexOf(char *input, char *search)
+{
+	return LNDex(input, search, 0);
+}
+int LastIndexOfFrom(char *input, char *search, int from)
+{
+	return LNDex(input, search, from);
+}
+
+
+int LastIndexOfSingleChar(char *input, char search)
+{
+	char *modifiedSearch = malloc(sizeof(char) * 2);
+	modifiedSearch[strlen(modifiedSearch)] = search;
+	modifiedSearch[strlen(modifiedSearch)] = '\0';
+	return LNDex(input, modifiedSearch, 0);
+}
+
+int LastIndexOfSingleCharFrom(char *input, char search, int from)
+{
+	char *modifiedSearch = malloc(sizeof(char) * 2);
+	modifiedSearch[strlen(modifiedSearch)] = search;
+	modifiedSearch[strlen(modifiedSearch)] = '\0';
+	return LNDex(input, modifiedSearch, from);
 }
