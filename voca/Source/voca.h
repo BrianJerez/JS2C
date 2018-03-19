@@ -54,7 +54,11 @@ int EndsWith(char *input, char *search);
 int StartsWith(char *input, char *search);
 
 //Manipulable Functions
+char *Reverse(char *input);
 char *Trim(char *input);
+char *TrimLeft(char *input);
+char *TrimRight(char *input);
 char *PadLeft(char *input, char *pattern, int amount);
 char *PadRight(char *input, char *pattern, int amount);
-
+char *Replace(char *input, char *match, char *replace);
+char *Splice(char *input, int start, int end);

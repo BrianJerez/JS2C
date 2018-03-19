@@ -71,10 +71,15 @@ int EndsWith(char *input, char *search);
 int StartsWith(char *input, char *search);
 
 //Manipulate Functions
+char *Reverse(char *input);
 char *Trim(char *input);
+char *TrimLeft(char *input);
+char *TrimRight(char *input);
 char *Padding(char *input, char *pattern, int amount, int flag);
 char *PadLeft(char *input, char *pattern, int amount);
 char *PadRight(char *input, char *pattern, int amount);
+char *Replace(char *input, char *match, char *replace);
+char *Splice(char *input, int start, int end);
 
 char *TrimedString(char *input)
 {
@@ -854,6 +859,19 @@ int StartsWith(char *input, char *search)
 	return indexSearch == strlen(search) ? 1 : 0;
 }
 
+char *Reverse(char *input)
+{
+	char *result = malloc(sizeof(char)*(strlen(input) + 1));
+
+	for(int i = strlen(input)-1; i>=0; i--)
+	{
+		result[strlen(result)] = input[i];
+	}
+
+	result[strlen(result)] = '\0';
+	return result;
+}
+
 char *Trim(char *input)
 {
 	return TrimedString(input);
@@ -897,4 +915,94 @@ char *PadLeft(char *input, char *pattern, int amount)
 char *PadRight(char *input, char *pattern, int amount)
 {
 	return Padding(input, pattern, amount, 1);
+}
+
+char *TrimLeft(char *input)
+{
+	int charsToBeTrimed = 0;
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isalpha(input[i]) == 0)
+		{
+			charsToBeTrimed++;
+			continue;
+		}
+
+		break;
+	}
+
+	char* result = malloc(sizeof(char)*(strlen(input) - charsToBeTrimed +1));
+	strcpy(result, input+charsToBeTrimed);
+
+	return result;
+}
+
+char *TrimRight(char *input)
+{
+	int charsToBeTrimed = 0;
+
+	input = Reverse(input);
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isalpha(input[i]) == 0)
+		{
+			charsToBeTrimed++;
+			continue;
+		}
+
+		break;
+	}
+
+	char* result = malloc(sizeof(char)*(strlen(input) - charsToBeTrimed +1));
+	strcpy(result, Reverse(input+charsToBeTrimed));
+
+	return result;
+}
+
+char *Replace(char *input, char *match, char *replace)
+{
+	int indexReplace = 0, inputIndex = 0, startingIndex = 0;
+	char *result = malloc(sizeof(char)*(strlen(input) - strlen(match) + strlen(replace) + 1));
+
+	if(IndexOf(input, match) >= 0)
+	{
+		startingIndex = IndexOf(input, match);
+		for(int i = 0; inputIndex<=(strlen(input)-strlen(match)+strlen(replace)); i++)
+		{
+			if(i >= startingIndex && i < ((strlen(match)>strlen(replace)?strlen(match):strlen(replace))+startingIndex))
+			{
+				if(indexReplace < strlen(replace))
+				{
+					result[strlen(result)] = replace[indexReplace++];
+				}
+				continue;
+			}
+
+			if(input[inputIndex] != match[inputIndex])
+			{
+				result[strlen(result)] = input[inputIndex++];
+			}else
+			{
+				inputIndex++;
+			}
+		}
+	}
+
+	result[strlen(result)] = '\0';
+	return result;
+}
+
+char *Splice(char *input, int start, int end)
+{
+	char *result = malloc(sizeof(char)*(1+strlen(input)-((end>strlen(input)?strlen(input):end)-(start<0?0:start))));
+
+	for(int i = end>strlen(input)?0:end; i<strlen(input); i++)
+	{
+		result[strlen(result)] = input[i];
+	}
+
+	result[strlen(result)] = '\0';
+	return result;
 }
