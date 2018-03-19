@@ -39,3 +39,22 @@ int LastIndexOf(char *input, char *search);
 int LastIndexOfFrom(char *input, char search, int from);
 int LastIndexOfSingleChar(char *input, char search);
 int LastIndexOfSingleCharFrom(char *input, char search, int from);
+
+//Query Functions
+int IsAlpha(char *input);
+int IsDigit(char *input);
+int IsAlphaDigit(char *input);
+int IsLowerCase(char *input);
+int IsUpperCase(char *input);
+int IsBlank(char *input);
+int IsEmpty(char *input);
+int IsNumeric(char *input);
+int Includes(char *input, char *search);
+int EndsWith(char *input, char *search);
+int StartsWith(char *input, char *search);
+
+//Manipulable Functions
+char *Trim(char *input);
+char *PadLeft(char *input, char *pattern, int amount);
+char *PadRight(char *input, char *pattern, int amount);
+

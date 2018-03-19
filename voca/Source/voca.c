@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 
-//Base functions
+//Especial Functions
 char *TrimedString(char *input);
 char *ReplaceSpecialChars(char *input);
 
@@ -55,6 +55,26 @@ int LastIndexOfFrom(char *input, char *search, int from);
 int LNDexOfSingleChar(char *input, char search, int from);
 int LastIndexOfSingleChar(char *input, char search);
 int LastIndexOfSingleCharFrom(char *input, char search, int from);
+
+//Query Functions
+int IsAlpha(char *input);
+int IsDigit(char *input);
+int IsAlphaDigit(char *input);
+int IsUpperORLower(char *input, int flag);
+int IsLowerCase(char *input);
+int IsUpperCase(char *input);
+int IsBlank(char *input);
+int IsEmpty(char *input);
+int IsNumeric(char *input);
+int Includes(char *input, char *search);
+int EndsWith(char *input, char *search);
+int StartsWith(char *input, char *search);
+
+//Manipulate Functions
+char *Trim(char *input);
+char *Padding(char *input, char *pattern, int amount, int flag);
+char *PadLeft(char *input, char *pattern, int amount);
+char *PadRight(char *input, char *pattern, int amount);
 
 char *TrimedString(char *input)
 {
@@ -637,4 +657,244 @@ int LastIndexOfSingleCharFrom(char *input, char search, int from)
 	modifiedSearch[strlen(modifiedSearch)] = search;
 	modifiedSearch[strlen(modifiedSearch)] = '\0';
 	return LNDex(input, modifiedSearch, from);
+}
+
+int IsAlpha(char *input)
+{
+	int invalidChars = 0;
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isalpha(input[i]) > 0 && isdigit(input[i]) == 0)
+		{
+			continue;
+		}
+
+		invalidChars++;
+	}
+
+	return invalidChars > 0 ? 0 : 1;
+}
+
+int IsDigit(char *input)
+{
+	int invalidChars = 0;
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isalpha(input[i]) == 0 && isdigit(input[i]) > 0)
+		{
+			continue;
+		}
+
+		invalidChars++;
+	}
+
+	return invalidChars > 0 ? 0 : 1;
+}
+
+int IsAlphaDigit(char *input)
+{
+	int invalidChars = 0;
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isalnum(input[i]))
+		{
+			continue;
+		}
+
+		invalidChars++;
+	}
+
+	return invalidChars > 0 && invalidChars != 0 ? 1 : 0;
+}
+
+int IsUpperOrLower(char *input, int flag)
+{
+	int invalidChars = 0;
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(flag == 0 && input[i] == toupper(input[i]))
+		{
+			invalidChars++;
+			break;
+		}
+		
+		if(flag == 1 && input[i] == tolower(input[i]))
+		{
+			invalidChars++;
+			break;
+		}
+
+		if(flag == 2 && input[i] != ' ')
+		{
+			invalidChars++;
+			break;
+		}
+
+		if(flag == 3)
+		{
+			invalidChars++;
+			break;
+		}
+	}
+
+	return invalidChars > 0 ? 0 : 1;
+}
+
+int IsLowerCase(char *input)
+{
+	return IsUpperOrLower(input, 0);
+}
+
+int IsUpperCase(char *input)
+{
+	return IsUpperOrLower(input, 1);
+}
+
+int IsBlank(char *input)
+{
+	return IsUpperOrLower(input, 2);
+}
+
+int IsEmpty(char *input)
+{	
+	return IsUpperOrLower(input, 2);
+}
+
+int IsNumeric(char *input)
+{
+	int validChars = 0;
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(isdigit(input[i]))
+		{
+			validChars++;
+			continue;
+		}
+
+		if(input[i] == '.' && (i == 0 || (isdigit(input[i-1]) && isdigit(input[i+1]))))
+		{
+			validChars++;
+			continue;
+		}
+
+		if((input[i] == '+' || input[i] == '-') && i == 0)
+		{
+			validChars++;
+		}
+	}
+
+	return validChars == strlen(input) ? 1 : 0;
+}
+
+int Includes(char *input, char *search)
+{
+	int result = 0, coincidences = 0, searchIndex = 0;
+
+	for(int i = 0; i<strlen(input); i++)
+	{
+		if(input[i] == search[searchIndex])
+		{
+			searchIndex++;
+		}
+		else
+		{
+			searchIndex = 0;
+		}
+
+		if(searchIndex == strlen(search))
+		{
+			result++;
+			break;
+		}
+	}
+
+	return result;
+}
+
+int EndsWith(char *input, char *search)
+{
+	int indexSearch = 0, coincidences = 0;
+
+	for(int i = strlen(input)-strlen(search); i<strlen(input); i++)
+	{
+		if(input[i] == search[indexSearch])
+		{
+			indexSearch++;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return indexSearch == strlen(search) ? 1 : 0;
+}
+
+int StartsWith(char *input, char *search)
+{
+	int indexSearch = 0, coincidences = 0;
+
+	for(int i = 0; i<strlen(search); i++)
+	{
+		if(input[i] == search[indexSearch])
+		{
+			indexSearch++;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return indexSearch == strlen(search) ? 1 : 0;
+}
+
+char *Trim(char *input)
+{
+	return TrimedString(input);
+}
+
+char *Padding(char *input, char *pattern, int amount, int flag)
+{
+	char *result = malloc(sizeof(char)* (amount + strlen(input) + 1));
+	int patternIndex = 0;
+
+	while(flag > 0 ? 0 : amount>strlen(result))
+	{
+		result[strlen(result)] = pattern[patternIndex++];
+
+		if(patternIndex == strlen(pattern))
+		{
+			patternIndex = 0;
+		}
+	}
+
+	strcpy(flag > 0 ? result : result + strlen(result), input);
+	
+	while(flag > 0 ? strlen(result) < amount + strlen(input) + 1 : 0)
+	{
+		result[strlen(result)] = pattern[patternIndex++];
+
+		if(patternIndex == strlen(pattern))
+		{
+			patternIndex = 0;
+		}
+	}
+
+	return result;
+}
+
+char *PadLeft(char *input, char *pattern, int amount)
+{
+	return Padding(input, pattern, amount, 0);
+}
+
+char *PadRight(char *input, char *pattern, int amount)
+{
+	return Padding(input, pattern, amount, 1);
 }
