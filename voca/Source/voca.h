@@ -62,3 +62,4 @@ char *PadLeft(char *input, char *pattern, int amount);
 char *PadRight(char *input, char *pattern, int amount);
 char *Replace(char *input, char *match, char *replace);
 char *Splice(char *input, int start, int end);
+char *Insert(char *input, char *ToBeInserted, int index);

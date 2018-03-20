@@ -80,6 +80,7 @@ char *PadLeft(char *input, char *pattern, int amount);
 char *PadRight(char *input, char *pattern, int amount);
 char *Replace(char *input, char *match, char *replace);
 char *Splice(char *input, int start, int end);
+char *Insert(char *input, char *ToBeInserted, int index);
 
 char *TrimedString(char *input)
 {
@@ -1004,5 +1005,27 @@ char *Splice(char *input, int start, int end)
 	}
 
 	result[strlen(result)] = '\0';
+	return result;
+}
+
+char *Insert(char *input, char *ToBeInserted, int index)
+{
+	char *result = malloc(sizeof(char)*(strlen(input)+strlen(ToBeInserted)+1));
+	
+	for(int i = 0; i<=strlen(input);i++)
+	{
+		if(i==index)
+		{
+			for(int j = 0; j<strlen(ToBeInserted); j++)
+			{
+				result[strlen(result)] = ToBeInserted[j];
+			}
+		}
+
+		result[strlen(result)] = input[i];
+	}
+
+	result[strlen(result)] = '\0';
+
 	return result;
 }
